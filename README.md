@@ -1,9 +1,10 @@
 - # De cero a Docker Compose
-
+  
+**Fecha:**12/04/2025  
 ---
 - ## 🐳 Taller de Iniciación a Docker
   
-  **Objetivo**: Aprender a usar Docker con ejemplos reales, desde lo más básico hasta crear tus propios servicios con Docker Compose.  
+  **Objetivo**: Aprender a usar Docker con ejemplos reales, desde lo más básico hasta crear tus propios servicios con Dockerfile y Docker Compose.  
   
 ---
 - ### 📦 ¿Qué es Docker?
@@ -58,6 +59,9 @@
 	  docker run hello-world
 	  ```
 	- ¿Qué hace esto?
+		- Busca la imagen hello-world en local
+		- La descarga de internet
+		- ejecuta la imagen con docker
 - ### 🧰 Herramientas básicas de Docker
 - Ejecutar un servicio
 	-
@@ -93,14 +97,25 @@
 		      ports:			#Puertos accesibles
 		        - "8080:80"
 		  ```
-	- mas opciones:
+	- más opciones:
 		- Volúmenes
 		- Carpetas
 		- Variables de entorno
 		- Redes
 		- Permisos
 		- Dispositivos
--
+	- ## Cheatsheet
+	-
+	  ```bash
+	  docker compose up -d
+	  docker compose down
+	  
+	  docker compose start
+	  docker compose stop
+	  
+	  docker compose logs
+	  docker compose ps
+	  ```
 - ### 👨‍🔧 Manos a la obra: Ejemplos prácticos
 	- **Levantamos un wordpress rapido con un docker compose**
 	    
@@ -144,18 +159,21 @@
 	      environment:
 	        - PUID=1000
 	        - PGID=1000
-	        - TZ=Etc/UTC
+	        - TZ=Europe/Madrid
 	      volumes:
-	        - /path/to/homeassistant/data:/config
+	        - ./data:/config
 	  #    ports:
 	  #      - 8123:8123 #optional
 	  #    devices:
 	  #      - /path/to/device:/path/to/device #optional
 	      restart: unless-stopped
 	  ```
+- Bola extra:
+	- Mover las variables de entorno a un .env
+-
 -
 - ### **Crea tu propio servicio con Dockerfile**
-	- Crear un servicio web simple(por ejemplo, Flask o Node.js).
+	- Servicio web simple(por ejemplo, Flask o Node.js).
 		- ### Estructura:
 		-
 		  ```
@@ -175,6 +193,9 @@
 		  @app.route('/')
 		  def hello():
 		      return "¡Hola Mundo desde Docker + Python!"
+		  
+		  if __name__ == "__main__":
+		      app.run(host="0.0.0.0", port=5000)
 		  ```
 		-
 		- ### `requirements.txt`
@@ -197,20 +218,16 @@
 		  COPY app.py app.py
 		  
 		  CMD ["python", "app.py"]
-		  
 		  ```
 		-
 		- ### `docker-compose.yml`
 		    
 		  ```yaml
-		  version: "3.8"
-		  
 		  services:
 		    web:
 		      build: .
 		      ports:
 		        - "5000:5000"
-		  
 		  ```
 	-
 	-
